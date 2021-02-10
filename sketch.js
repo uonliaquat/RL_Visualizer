@@ -5,7 +5,7 @@ function setup() {
   createCanvas(CAVAS_SIZE.WIDTH, CAVAS_SIZE.HEIGHT);
   textSize(18)
 
-  env = new GridWorld({width:12, height:8});
+  env = new GridWorld({WIDTH:4, HEIGHT:3});
 }
 
 function draw() {

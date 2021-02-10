@@ -1,15 +1,17 @@
 const STATE_SIZE = {WIDTH:80, HEIGHT:80};
 class State{
-  constructor(type, position, value, policy){
+  constructor(type, cordiates, position, policy){
     this.type = type;
+    this.cordiates = cordiates;
+    this.policy = policy;
     this.position = position;
-    this.value = value
-    this.polciy = policy;
+    this.value = 0;
     this.setColorValue();
+    this.setActions();
   }
 
   isMouseInside(){
-    if(mouseX > this.position.x && mouseX < this.position.x + STATE_SIZE.WIDTH && mouseY > this.position.y && mouseY < this.position.y + STATE_SIZE.HEIGHT) return true;
+    if(mouseX > this.cordiates.x && mouseX < this.cordiates.x + STATE_SIZE.WIDTH && mouseY > this.cordiates.y && mouseY < this.cordiates.y + STATE_SIZE.HEIGHT) return true;
     return false;
   }
 
@@ -18,18 +20,17 @@ class State{
     switch (this.type) {
       case STATE_TYPE.DEFAULT:
         this.color = 255;
-        this.value = 0;
         break;
       case STATE_TYPE.BRICK:
-        this.color = 0;
+          this.color = color('rgb(0,0,0)');
         break
       case STATE_TYPE.PIT:
-        this.color = color('rgb(100,40,0)');
         this.value = -1;
+        this.color = color('rgb(100,40,0)');
         break;
       case STATE_TYPE.GOAL:
-        this.color = color('rgb(0,0,200)');
         this.value = 1;
+        this.color = color('rgb(0,0,200)');
         break;
       default:
         break;
@@ -41,11 +42,20 @@ class State{
     this.setColorValue();
   }
 
+  setActions(){
+    if(this.type == STATE_TYPE.DEFAULT) return {LEFT:0, UP:1, RIGHT:2, DOWN:3};
+    return {RIGHT:2};
+  }
+
+  getMappedIndex(){
+     return this.position.y * GRID_SIZE.WIDTH + this.position.x;
+  }
+
   draw(){
     strokeWeight(1);
     stroke(color('rgb(0, 0, 0)'));
     fill(this.color);
-    rect(this.position.x, this.position.y, STATE_SIZE.WIDTH, STATE_SIZE.HEIGHT);
+    rect(this.cordiates.x, this.cordiates.y, STATE_SIZE.WIDTH, STATE_SIZE.HEIGHT);
     this.drawValue();
     this.drawPolicy();
   }
@@ -53,7 +63,7 @@ class State{
   drawValue(){
     if(this.type != STATE_TYPE.BRICK){
       fill(color('rgb(200, 105, 00)'));
-      text(this.value, this.position.x + 5, this.position.y + 5  , 100,100);
+      text(this.value, this.cordiates.x + 5, this.cordiates.y + 5  , 100,100);
     }
   }
 
@@ -62,18 +72,22 @@ class State{
       var dist = 20;
       strokeWeight(2);
       stroke(color('rgb(255, 0, 0)'));
-      //right
-      line(this.position.x + STATE_SIZE.WIDTH/2, this.position.y + STATE_SIZE.HEIGHT/2, this.position.x + STATE_SIZE.WIDTH - dist,  this.position.y + STATE_SIZE.HEIGHT/2);
-      ellipse(this.position.x + STATE_SIZE.WIDTH - dist,  this.position.y + STATE_SIZE.HEIGHT/2, 3);
-      //left
-      line(this.position.x + STATE_SIZE.WIDTH/2, this.position.y + STATE_SIZE.HEIGHT/2, this.position.x + dist,  this.position.y + STATE_SIZE.HEIGHT/2);
-      ellipse(this.position.x + dist,  this.position.y + STATE_SIZE.HEIGHT/2, 3);
-      //Up
-      line(this.position.x + STATE_SIZE.WIDTH/2, this.position.y + STATE_SIZE.HEIGHT/2, this.position.x + STATE_SIZE.WIDTH/2,  this.position.y + dist);
-      ellipse(this.position.x + STATE_SIZE.WIDTH/2,  this.position.y + dist, 3);
-      //Down
-      line(this.position.x + STATE_SIZE.WIDTH/2, this.position.y + STATE_SIZE.HEIGHT/2, this.position.x + STATE_SIZE.WIDTH/2,  this.position.y + STATE_SIZE.HEIGHT - dist);
-      ellipse(this.position.x + STATE_SIZE.WIDTH/2,  this.position.y + STATE_SIZE.HEIGHT - dist, 3);
+      if(this.policy.RIGHT){
+        line(this.cordiates.x + STATE_SIZE.WIDTH/2, this.cordiates.y + STATE_SIZE.HEIGHT/2, this.cordiates.x + STATE_SIZE.WIDTH - dist,  this.cordiates.y + STATE_SIZE.HEIGHT/2);
+        ellipse(this.cordiates.x + STATE_SIZE.WIDTH - dist,  this.cordiates.y + STATE_SIZE.HEIGHT/2, 3);
+      }
+      if(this.policy.LEFT){
+        line(this.cordiates.x + STATE_SIZE.WIDTH/2, this.cordiates.y + STATE_SIZE.HEIGHT/2, this.cordiates.x + dist,  this.cordiates.y + STATE_SIZE.HEIGHT/2);
+        ellipse(this.cordiates.x + dist,  this.cordiates.y + STATE_SIZE.HEIGHT/2, 3);
+      }
+      if(this.policy.UP){
+        line(this.cordiates.x + STATE_SIZE.WIDTH/2, this.cordiates.y + STATE_SIZE.HEIGHT/2, this.cordiates.x + STATE_SIZE.WIDTH/2,  this.cordiates.y + dist);
+        ellipse(this.cordiates.x + STATE_SIZE.WIDTH/2,  this.cordiates.y + dist, 3);
+      }
+      if(this.policy.DOWN){
+        line(this.cordiates.x + STATE_SIZE.WIDTH/2, this.cordiates.y + STATE_SIZE.HEIGHT/2, this.cordiates.x + STATE_SIZE.WIDTH/2,  this.cordiates.y + STATE_SIZE.HEIGHT - dist);
+        ellipse(this.cordiates.x + STATE_SIZE.WIDTH/2,  this.cordiates.y + STATE_SIZE.HEIGHT - dist, 3);
+      }
     }
   }
 
