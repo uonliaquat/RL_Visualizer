@@ -12,26 +12,24 @@ class GridWorld{
       }
     }
     this.actions = {LEFT:0, UP:1, RIGHT:2, DOWN:3};
-    this.rewards = this.createRewards();
-    this.transitions =  this.createTransitionProbabilities();
-    console.log(this.transitions);
+    this.setRewards();
+    this.setTransitionProbabilities();
 
   }
 
-  createRewards(){
-    var rewards = [];
+  setRewards(){
+    this.rewards = [];
     this.states.forEach((state, i) => {
         var state_rewards = [];
         for(var i = 0; i < Object.keys(this.actions).length; i++){
           state_rewards.push(state.value);
         }
-        rewards.push(state_rewards);
+        this.rewards.push(state_rewards);
     });
-    return rewards;
   }
 
-  createTransitionProbabilities(){
-    var transitions = [];
+  setTransitionProbabilities(){
+    this.transitions = [];
     for(let key in this.actions){
       var transitionMatrix = [];
 
@@ -42,13 +40,12 @@ class GridWorld{
         row[this.next_state(state, this.get_action(this.actions[key] + 1)).getMappedIndex()] += 0.1
         transitionMatrix.push(row);
       });
-      transitions.push(transitionMatrix);
+      this.transitions.push(transitionMatrix);
     }
-    return transitions;
+    console.log(this.transitions);
   }
 
   get_action(action){
-    var new_action = action
     switch (action) {
       case 4:
         return this.actions.LEFT;
@@ -94,7 +91,6 @@ class GridWorld{
     this.states.forEach((state, i) => {
       if(state.isMouseInside() && mouseIsPressed) {
         state.setType(selected_state_type);
-        this.rewards = this.createRewards();
       };
     });
   }

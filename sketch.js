@@ -1,16 +1,24 @@
 // let arr = [];
-CAVAS_SIZE = {WIDTH:1000, HEIGHT:700}
+CANVAS_SIZE = {WIDTH:322, HEIGHT:242}
 var env;
 function setup() {
-  createCanvas(CAVAS_SIZE.WIDTH, CAVAS_SIZE.HEIGHT);
+
+  let cnv = createCanvas(CANVAS_SIZE.WIDTH, CANVAS_SIZE.HEIGHT);
+  env = new GridWorld({WIDTH:Math.floor(CANVAS_SIZE.WIDTH/80), HEIGHT:Math.floor(CANVAS_SIZE.HEIGHT/80)});
+  cnv.mouseReleased(updateEnv);
   textSize(18)
 
-  env = new GridWorld({WIDTH:4, HEIGHT:3});
 }
 
 function draw() {
   background(220);
   env.loop();
+}
+
+function updateEnv(event) {
+  console.log(event);
+  env.setRewards();
+  env.setTransitionProbabilities();
 }
 
 
