@@ -1,12 +1,12 @@
 const STATE_TYPE = {DEFAULT:0, BRICK:1, PIT:2, GOAL:3 }
-var selected_state_type  = -1;
+var selected_state_type  = 0;
 class GridWorld{
   constructor(size){
     this.size = size;
     this.states = [];
     for(var i = 0; i < size.width; i++){
       for(var j = 0; j < size.height; j++){
-          var state = new State(STATE_TYPE.DEFAULT, {x:i*STATE_SIZE.HEIGHT,y:j*STATE_SIZE.WIDTH});
+          var state = new State(STATE_TYPE.DEFAULT, {x:i*STATE_SIZE.HEIGHT,y:j*STATE_SIZE.WIDTH}, 0);
           this.states.push(state);
       }
     }

@@ -3,8 +3,9 @@ CAVAS_SIZE = {WIDTH:1000, HEIGHT:700}
 var env;
 function setup() {
   createCanvas(CAVAS_SIZE.WIDTH, CAVAS_SIZE.HEIGHT);
-  env = new GridWorld({width:18, height:12});
+  textSize(18)
 
+  env = new GridWorld({width:12, height:8});
 }
 
 function draw() {
@@ -13,7 +14,6 @@ function draw() {
 }
 
 
-//   textAlign(CENTER, CENTER);
 //
 //
 //   for (let y = 0; y < 10; y++) {
