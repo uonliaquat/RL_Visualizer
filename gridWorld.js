@@ -91,6 +91,7 @@ class GridWorld{
     this.states.forEach((state, i) => {
       if(state.isMouseInside() && mouseIsPressed) {
         state.setType(selected_state_type);
+        state.setColorValue();
       };
     });
   }
@@ -104,5 +105,24 @@ class GridWorld{
   loop(){
     this.changeStateOnMouseDrag();
     this.draw();
+  }
+
+  update(){
+    this.states.forEach((state, i) => {
+      state.setLegalActions();
+      this.setRewards();
+    });
+  }
+
+  updateValues(values){
+    var states = this.states;
+    for(var j = 0; j < values.length; j++){
+      setTimeout(function() {
+        states.forEach((state, i) => {
+          state.value = values[0][i].toFixed(2);
+        });
+        values.shift()
+      }, j * 1000);
+    }
   }
 }

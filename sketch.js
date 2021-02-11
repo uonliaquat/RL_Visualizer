@@ -2,11 +2,10 @@
 CANVAS_SIZE = {WIDTH:322, HEIGHT:242}
 var env;
 function setup() {
-
   let cnv = createCanvas(CANVAS_SIZE.WIDTH, CANVAS_SIZE.HEIGHT);
   env = new GridWorld({WIDTH:Math.floor(CANVAS_SIZE.WIDTH/80), HEIGHT:Math.floor(CANVAS_SIZE.HEIGHT/80)});
   cnv.mouseReleased(updateEnv);
-  textSize(18)
+  textSize(12)
 
 }
 
@@ -16,9 +15,7 @@ function draw() {
 }
 
 function updateEnv(event) {
-  console.log(event);
-  env.setRewards();
-  env.setTransitionProbabilities();
+  env.update();
 }
 
 

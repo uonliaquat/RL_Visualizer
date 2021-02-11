@@ -7,7 +7,7 @@ class State{
     this.position = position;
     this.value = 0;
     this.setColorValue();
-    this.setActions();
+    this.setLegalActions();
   }
 
   isMouseInside(){
@@ -19,6 +19,7 @@ class State{
   setColorValue(){
     switch (this.type) {
       case STATE_TYPE.DEFAULT:
+        this.value =  0;
         this.color = 255;
         break;
       case STATE_TYPE.BRICK:
@@ -39,12 +40,15 @@ class State{
 
   setType(type){
     this.type = type;
-    this.setColorValue();
   }
 
-  setActions(){
-    if(this.type == STATE_TYPE.DEFAULT) return {LEFT:0, UP:1, RIGHT:2, DOWN:3};
-    return {RIGHT:2};
+  setLegalActions(){
+    if(this.type == STATE_TYPE.DEFAULT) {
+      this.legal_actions =  {LEFT:0, UP:1, RIGHT:2, DOWN:3};
+    }
+    else{
+      this.legal_actions =  {RIGHT:2};
+    }
   }
 
   getMappedIndex(){
@@ -62,7 +66,11 @@ class State{
 
   drawValue(){
     if(this.type != STATE_TYPE.BRICK){
-      fill(color('rgb(200, 105, 00)'));
+      noStroke();
+      fill(color('rgb(0, 0, 0)'));
+      if(this.type != STATE_TYPE.DEFAULT){
+        fill(color('rgb(255, 255, 255)'));
+      }
       text(this.value, this.cordiates.x + 5, this.cordiates.y + 5  , 100,100);
     }
   }

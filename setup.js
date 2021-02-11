@@ -19,3 +19,9 @@ var gold_btn =document.getElementById('goal_btn');
 gold_btn.addEventListener("click", () => {
 		selected_state_type = STATE_TYPE.GOAL;
 });
+
+var toggle_value_iteration_btn =document.getElementById('toggle_value_iteration_btn');
+toggle_value_iteration_btn.addEventListener("click", () => {
+	var solver = new MDPSolver(env);
+	solver.value_iteration();
+});
