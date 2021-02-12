@@ -7,7 +7,7 @@ class GridWorld{
     this.states = [];
     for(var i = 0; i < GRID_SIZE.HEIGHT; i++){
       for(var j = 0; j < GRID_SIZE.WIDTH; j++){
-          var state = new State(STATE_TYPE.DEFAULT, {x:j*STATE_SIZE.WIDTH,y:i*STATE_SIZE.HEIGHT}, {x:j, y:i}, {LEFT:false, UP:false, RIGHT:false, DOWN:false});
+          var state = new State(STATE_TYPE.DEFAULT, {x:j*STATE_SIZE.WIDTH,y:i*STATE_SIZE.HEIGHT}, {x:j, y:i});
           this.states.push(state);
       }
     }
@@ -42,7 +42,6 @@ class GridWorld{
       });
       this.transitions.push(transitionMatrix);
     }
-    console.log(this.transitions);
   }
 
   get_action(action){
@@ -114,15 +113,18 @@ class GridWorld{
     });
   }
 
-  updateValues(values){
+
+  updateValuesAndPolicy(values, policies){
     var states = this.states;
     for(var j = 0; j < values.length; j++){
       setTimeout(function() {
         states.forEach((state, i) => {
-          state.value = values[0][i].toFixed(2);
+          state.value = values[0][i].toFixed(2);;;
+          state.setPolicy(policies[0][i]);
         });
-        values.shift()
-      }, j * 1000);
+        values.shift();
+        policies.shift();
+      }, j * 0);
     }
   }
 }

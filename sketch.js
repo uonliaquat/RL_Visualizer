@@ -1,5 +1,5 @@
 // let arr = [];
-CANVAS_SIZE = {WIDTH:322, HEIGHT:242}
+CANVAS_SIZE = {WIDTH:822, HEIGHT:642}
 var env;
 function setup() {
   let cnv = createCanvas(CANVAS_SIZE.WIDTH, CANVAS_SIZE.HEIGHT);

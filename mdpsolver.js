@@ -1,30 +1,33 @@
 
 class MDPSolver{
-  constructor(env, gamma = 0.9, beta = 0.000001, iterations = 100){
+  constructor(env, gamma = 0.90, beta = 0.000000001, iterations = 100){
     this.env = env;
     this.iterations = iterations;
     this.gamma = gamma;
     this.beta = beta;
     this.values = new Array(this.env.states.length).fill(0);
+    this.policy = [];
     this.values_to_update = [];
+    this.policies_to_update = [];
   }
 
   value_iteration(){
     var temp_values = new Array(this.env.states.length).fill(0);
-    var beta = 1;
-    while(--this.iterations > 0 && beta > this.beta){
-      this.values = temp_values.slice();
-      this.values_to_update.push(this.values);
+    while(--this.iterations > 0 || this.absDiff(this.values, temp_values).reduce((a, b) => a + b, 0) > this.beta){
+      this.values_to_update.push(this.values = temp_values.slice());
+      var temp_policies = [];
       for(var i = 0; i < this.env.states.length; i++){
+        var state = this.env.states[i];
         var q_values = [];
-        for(let action in this.env.states[i].legal_actions){
-          q_values.push(this.q_value(this.env.states[i], action));
-        }
-        temp_values[this.env.states[i].getMappedIndex()] = Math.max.apply(Math, q_values);
+        for(let action in state.legal_actions)
+           q_values.push(this.q_value(state, action));
+        temp_policies.push(this.argMax(q_values));
+        temp_values[state.getMappedIndex()] = Math.max.apply(Math, q_values);
       }
-      beta = this.absDiff(this.values, temp_values).reduce((a, b) => a + b, 0);
+      this.policies_to_update.push(temp_policies);
     }
-    this.env.updateValues(this.values_to_update);
+    this.policy_improvement();
+    this.env.updateValuesAndPolicy(this.values_to_update, this.policies_to_update);
   }
 
   q_value(state, action){
@@ -39,6 +42,37 @@ class MDPSolver{
     }
     return reward;
   }
+
+
+  policy_improvement(){
+    this.env.states.forEach((state, i) => {
+        var q_values = [];
+        for(let action in state.legal_actions)
+             q_values.push(this.q_value(state, action));
+        this.policy.push(this.argMax(q_values));
+    });
+  }
+
+  argMax(arr) {
+    if (arr.length === 0)
+        return -1;
+    var max_index = [];
+    var max_element = arr[0];
+    max_index.push(0);
+    for(var i = 1; i < arr.length; i++){
+      if(arr[i] > max_element){
+        max_index = [];
+        max_index.push(i);
+        max_element = arr[i];
+      }
+      else if(arr[i] >= max_element){
+        max_index.push(i);
+        max_element = arr[i];
+      }
+    }
+    return max_index;
+  }
+
 
   absDiff(arr1, arr2){
    const res = [];
