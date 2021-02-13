@@ -1,6 +1,6 @@
 
 class MDPSolver{
-  constructor(env, gamma = 0.90, beta = 0.000000001, iterations = 100){
+  constructor(env, gamma = 0.9, beta = 0.0000000000000000001, iterations = 1000){
     this.env = env;
     this.iterations = iterations;
     this.gamma = gamma;
@@ -12,8 +12,10 @@ class MDPSolver{
   }
 
   value_iteration(){
+    debugger
     var temp_values = new Array(this.env.states.length).fill(0);
     while(--this.iterations > 0 || this.absDiff(this.values, temp_values).reduce((a, b) => a + b, 0) > this.beta){
+      debugger
       this.values_to_update.push(this.values = temp_values.slice());
       var temp_policies = [];
       for(var i = 0; i < this.env.states.length; i++){

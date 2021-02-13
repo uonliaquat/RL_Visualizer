@@ -1,5 +1,6 @@
 
 var default_btn = document.getElementById('default_btn');
+var selected_state_type = 0;
 default_btn.addEventListener("click", () => {
 	selected_state_type = STATE_TYPE.DEFAULT;
 });

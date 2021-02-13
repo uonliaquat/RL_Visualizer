@@ -1,5 +1,4 @@
 const STATE_TYPE = {DEFAULT:0, BRICK:1, PIT:2, GOAL:3 }
-var selected_state_type  = 0;
 var GRID_SIZE;
 class GridWorld{
   constructor(size){
@@ -32,7 +31,6 @@ class GridWorld{
     this.transitions = [];
     for(let key in this.actions){
       var transitionMatrix = [];
-
       this.states.forEach((state, i) => {
         var row = new Array(this.states.length).fill(0);
         row[this.next_state(state, this.actions[key]).getMappedIndex()] += 0.8
@@ -110,6 +108,7 @@ class GridWorld{
     this.states.forEach((state, i) => {
       state.setLegalActions();
       this.setRewards();
+      this.setTransitionProbabilities();
     });
   }
 
@@ -124,7 +123,7 @@ class GridWorld{
         });
         values.shift();
         policies.shift();
-      }, j * 0);
+      }, j * 500);
     }
   }
 }
