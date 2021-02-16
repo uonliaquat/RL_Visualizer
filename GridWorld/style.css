@@ -1,0 +1,8 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+.slider-horizontal{
+  width:800px; /* sample value - set it as you like*/
+}

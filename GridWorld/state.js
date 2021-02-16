@@ -1,12 +1,14 @@
-const STATE_SIZE = {WIDTH:80, HEIGHT:80};
+const STATE_SIZE = {WIDTH:70, HEIGHT:70};
 class State{
   constructor(type, cordiates, position){
     this.type = type;
     this.cordiates = cordiates;
     this.position = position;
     this.value = 0;
+    this.color = color(255, 255, 255);
     this.setPolicy();
-    this.setColorValue();
+    this.setColor();
+    this.setReward(0);
     this.setLegalActions();
   }
 
@@ -16,24 +18,32 @@ class State{
   }
 
 
-  setColorValue(){
+  setColor(){
+    switch (this.type) {
+      case STATE_TYPE.DEFAULT:
+        this.color =color(255, 255, 255);
+        break;
+      case STATE_TYPE.BRICK:
+          this.color = color(0, 0, 0);
+        break
+      case STATE_TYPE.PIT:
+        this.color = color(100, 40, 0);
+        break;
+      case STATE_TYPE.GOAL:
+        this.color =color(0, 0, 200);
+        break;
+      default:
+        break;
+    }
+  }
+
+  setReward(reward){
     switch (this.type) {
       case STATE_TYPE.DEFAULT:
         this.value =  0;
-        this.color = 255;
-        break;
-      case STATE_TYPE.BRICK:
-          this.color = color('rgb(0,0,0)');
-        break
-      case STATE_TYPE.PIT:
-        this.value = -1;
-        this.color = color('rgb(100,40,0)');
-        break;
-      case STATE_TYPE.GOAL:
-        this.value = 1;
-        this.color = color('rgb(0,0,200)');
         break;
       default:
+        this.value = reward;
         break;
     }
   }
@@ -107,6 +117,15 @@ class State{
         }
       }
     }
+  }
+
+  reset(){
+    this.value = 0;
+    this.type = STATE_TYPE.DEFAULT;
+    this.setPolicy();
+    this.setColor();
+    this.setReward(0);
+    this.setLegalActions();
   }
 
   loop(){

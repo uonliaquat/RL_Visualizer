@@ -1,24 +1,15 @@
 <!DOCTYPE html><html><head>
-    <script src="p5.min.js"></script>
-    <script src="p5.dom.min.js"></script>
-    <script src="p5.sound.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <meta charset="utf-8">
-
   </head>
   <body>
-    <div>
-      <button id="default_btn">Default</button>
-      <button id="brick_btn">Brick</button>
-      <button id="pit_btn">Pit</button>
-      <button id="goal_btn">Goal</button>
-      <button id="toggle_value_iteration_btn">Toggle Value Iteration</button>
-    </div>
-    <script src="setup.js"></script>
-    <script src="gridWorld.js"></script>
-    <script src="state.js"></script>
-    <script src="sketch.js"></script>
-    <script src="mdpsolver.js"></script>
-
-
-</body></html>
+    <div id="config">
+        <div>
+            <span class="label">Number of rows:</span> <input value="10" type="number" id="rows" />
+        </div>
+        <div class="row">
+            <span class="label">Number of cols:</span> <input value="10" type="number" id="cols" />
+        </div>
+          <button id="generate">Generate</button>
+        </div>
+  <script src="index.js"></script>
+</body>
+</html>

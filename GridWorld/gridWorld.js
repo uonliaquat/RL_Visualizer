@@ -88,7 +88,8 @@ class GridWorld{
     this.states.forEach((state, i) => {
       if(state.isMouseInside() && mouseIsPressed) {
         state.setType(selected_state_type);
-        state.setColorValue();
+        state.setColor();
+        state.setReward(reward);
       };
     });
   }
@@ -112,18 +113,29 @@ class GridWorld{
     });
   }
 
+  reset(){
+    for(var i = 0; i < GRID_SIZE.HEIGHT * GRID_SIZE.WIDTH; i++)
+        this.states[i].reset();
+    this.setRewards();
+    this.setTransitionProbabilities();
+  }
 
-  updateValuesAndPolicy(values, policies){
+  updateValuesAndPolicy(values, policies, speed){
     var states = this.states;
     for(var j = 0; j < values.length; j++){
       setTimeout(function() {
         states.forEach((state, i) => {
-          state.value = values[0][i].toFixed(2);;;
+          state.value = values[0][i].toFixed(2);
+          if(state.type == STATE_TYPE.DEFAULT)
+              state.color = color(255, 255, (255 * (1-  state.value)));
           state.setPolicy(policies[0][i]);
         });
         values.shift();
         policies.shift();
-      }, j * 500);
+      }, j * speed);
     }
+    setTimeout(function(){
+        enable_buttons();
+    }, values.length * speed);
   }
 }
