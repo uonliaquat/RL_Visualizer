@@ -89,7 +89,7 @@ class GridWorld{
       if(state.isMouseInside() && mouseIsPressed) {
         state.setType(selected_state_type);
         state.setColor();
-        state.setReward(reward);
+        state.setReward(+reward);
       };
     });
   }
@@ -108,9 +108,9 @@ class GridWorld{
   update(){
     this.states.forEach((state, i) => {
       state.setLegalActions();
-      this.setRewards();
-      this.setTransitionProbabilities();
     });
+    this.setRewards();
+    this.setTransitionProbabilities();
   }
 
   reset(){
