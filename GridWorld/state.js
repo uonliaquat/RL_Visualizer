@@ -1,4 +1,4 @@
-const STATE_SIZE = {WIDTH:70, HEIGHT:70};
+const STATE_SIZE = {WIDTH:60, HEIGHT:60};
 class State{
   constructor(type, cordiates, position){
     this.type = type;

@@ -5,6 +5,5 @@ var height = 0;
 generate_btn.addEventListener("click", () => {
 		width =  document.getElementById('cols').value;
 		height =  document.getElementById('rows').value;
-		if(width > 20 || height > 20 || width < 0 || height < 0) return alert('Width and Height must be less than or equal to 20'); 
     window.location.href = `/GridWorld/index.html?width=${width}&height=${height}`;
 });
